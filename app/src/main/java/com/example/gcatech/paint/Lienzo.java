@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,7 +87,12 @@ public class Lienzo extends View {
         canvas.drawPath(drawPath,drawPaint);
         canvas.drawLine(startX, startY, endX, endY, drawPaint);
 
+
     }
+
+
+
+
 
     //funcion Touch-registra los touch de usuario
     //va controlar los eventos del usuario
@@ -121,11 +127,14 @@ public class Lienzo extends View {
                 endX = event.getX();
                 endY = event.getY();
                 drawCanvas.drawLine(startX, startY, endX, endY, drawPaint);
+
                 //drawCanvas.drawPath(drawPath,drawPaint);
                 //drawPath.reset();
                 float x = ((endX - startX)/2)+startX;
                 float y =  ((endY - startY)/2)+startY;
                 dialogoP(x, y);
+
+
 
 
                 invalidate();
@@ -188,8 +197,19 @@ public class Lienzo extends View {
         AlertDialog.Builder builder = b.setCancelable(false);
         b.setTitle("IPA");
         b.setView(dialoglayoutPR);
-                                                                      //se configura el título del dialogo
         txtMessage.getText();
+        edtxtMedida.setOnKeyListener(new OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(edtxtMedida.getText().toString().length()==5)
+                {
+                    edtxtMedida.setError("Supera el limit");
+                    
+                }
+                return false;
+            }
+        });
+
         final AlertDialog showDialogo = b.show();
 
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -203,8 +223,13 @@ public class Lienzo extends View {
                     Toast.makeText(getContext(),R.string.ok,Toast.LENGTH_LONG).show();
                     drawCanvas.drawText(dato, x, y, drawPaint);
                     showDialogo.dismiss();
-                }else{
-                    Toast.makeText(getContext(),R.string.cancelar,Toast.LENGTH_LONG).show();
+                }
+
+                else{
+                    //Toast.makeText(getContext(),R.string.cancelar,Toast.LENGTH_LONG).show();
+                    edtxtMedida.setError("Debe Ingresar un Valor");
+
+
                 }
             }
         });
@@ -215,7 +240,7 @@ public class Lienzo extends View {
                 showDialogo.dismiss();
             }
         });
-                                                                                         //muestra el dialogo
+
 
 
     }

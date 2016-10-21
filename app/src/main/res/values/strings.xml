@@ -3,5 +3,6 @@
     <string name="ok">Dato Agregado</string>
     <string name="cancelar">Cancelar</string>
     <string name="info">Ingresa un Valor</string>
+    <string name="info2">(Longitud mínima 5 Caracteres)</string>
 
 </resources>
