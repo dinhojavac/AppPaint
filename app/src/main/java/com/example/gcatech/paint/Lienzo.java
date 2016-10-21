@@ -1,18 +1,22 @@
 package com.example.gcatech.paint;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
-/**
- * Created by GCATech on 13/10/2016.
- */
 
 public class Lienzo extends View {
     private float startX;
@@ -30,6 +34,7 @@ public class Lienzo extends View {
     //canvas para guardar, el tipo de archivo a construir
     private Bitmap canvasBitmap;
 
+    String dato;
     public Lienzo(Context context) {
         super(context);
     }
@@ -80,11 +85,12 @@ public class Lienzo extends View {
         canvas.drawBitmap(canvasBitmap,0,0,canvasPaint);
         canvas.drawPath(drawPath,drawPaint);
         canvas.drawLine(startX, startY, endX, endY, drawPaint);
+
     }
 
     //funcion Touch-registra los touch de usuario
     //va controlar los eventos del usuario
-
+    Intent dialogo;
     public boolean onTouchEvent(MotionEvent event){
         /*float touchX=event.getX();
         float touchY=event.getY();
@@ -117,7 +123,13 @@ public class Lienzo extends View {
                 drawCanvas.drawLine(startX, startY, endX, endY, drawPaint);
                 //drawCanvas.drawPath(drawPath,drawPaint);
                 //drawPath.reset();
+                float x = ((endX - startX)/2)+startX;
+                float y =  ((endY - startY)/2)+startY;
+                dialogoP(x, y);
+
+
                 invalidate();
+
                 break;
             default:
                 return false;
@@ -142,6 +154,76 @@ public class Lienzo extends View {
     public Lienzo(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
+
+    //metodo dialogo-funcional
+    /*
+    public void dialogo(){
+        AlertDialog.Builder b=new AlertDialog.Builder(getContext());
+        b.setTitle("Titulo");
+        b.setMessage("el mensaje para el usuario");
+        b.setPositiveButton("Ok",
+                new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog,int which){
+                        //listener.onPossitiveButtonClick();
+                        Toast.makeText(getContext(),R.string.ok,Toast.LENGTH_SHORT).show();
+                    }
+                });
+        b.setNegativeButton(android.R.string.cancel,null);
+        //Dialog d=b.create();
+        b.show();
+    }*/
+    //metodo dialogo 2-funcional
+
+    public void dialogoP(final float x, final float y){
+
+        LayoutInflater inflater = (LayoutInflater)   getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View dialoglayoutPR = inflater.inflate(R.layout.dialogo, null);
+        final EditText edtxtMedida = (EditText) dialoglayoutPR.findViewById(R.id.Valor); // dialoglayoutPR.Valor
+        final Button btnOk  = (Button) dialoglayoutPR.findViewById(R.id.Enviar);
+        final Button btnCancel = (Button) dialoglayoutPR.findViewById(R.id.Reset);
+        final TextView txtMessage = (TextView) dialoglayoutPR.findViewById(R.id.InfoText);
+
+        final AlertDialog.Builder b = new AlertDialog.Builder(getContext());                                //creamos un objeto de la clase AlertDialog a través de la clase Builder
+        AlertDialog.Builder builder = b.setCancelable(false);
+        b.setTitle("IPA");
+        b.setView(dialoglayoutPR);
+                                                                      //se configura el título del dialogo
+        txtMessage.getText();
+        final AlertDialog showDialogo = b.show();
+
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                dato = edtxtMedida.getText().toString().trim();
+                //vlor=Integer.parseInt(dato);
+                //listener.onPossitiveButtonClick();
+                if(dato.length()!=0){
+                    Toast.makeText(getContext(),R.string.ok,Toast.LENGTH_LONG).show();
+                    drawCanvas.drawText(dato, x, y, drawPaint);
+                    showDialogo.dismiss();
+                }else{
+                    Toast.makeText(getContext(),R.string.cancelar,Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                showDialogo.dismiss();
+            }
+        });
+                                                                                         //muestra el dialogo
+
+
+    }
+
+
+
+
+
 
 
 }

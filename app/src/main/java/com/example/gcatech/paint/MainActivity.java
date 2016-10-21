@@ -1,5 +1,6 @@
 package com.example.gcatech.paint;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -42,7 +44,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        String color=null;
+        //mejor forma de utilizar un string
+        String color;
+        //mas no asi
+        //String color="";
+
 
         switch (v.getId()){
             case R.id.ColorNegro:
@@ -50,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //llama a getTag() que es el trae el color y lo convierte a string por medio de toString()
                 color=v.getTag().toString();
                 lienzo.setColor(color);
+                //new Dialogo().show(getFragmentManager(),"Superman en Supertangas");
+
                 break;
 
             case R.id.ColorBlanco:
